@@ -18,31 +18,31 @@
 LIBDIR=../Library
 INCL = -I$(LIBDIR)
 
-#CFLAGS = -O -Wall $(INCL)
-AR          = ar
-CC          = gcc
-CFLAGS      = -g -Wall $(INCL)
+#CPPFLAGS = -O -Wall $(INCL)
+AR              = ar
+CXX             = g++
+CPPFLAGS        = -g -Wall $(INCL)
 
-LTKC_LIB = $(LIBDIR)/libltkc.a
-LTKC_HDRS = \
-	$(LIBDIR)/ltkc.h		\
-	$(LIBDIR)/ltkc_base.h		\
-	$(LIBDIR)/ltkc_connection.h	\
-	$(LIBDIR)/ltkc_frame.h		\
-	$(LIBDIR)/ltkc_platform.h	\
-	$(LIBDIR)/ltkc_xmltext.h	\
-	$(LIBDIR)/out_ltkc.h
+LTKCPP_LIB = $(LIBDIR)/libltkcpp.a
+LTKCPP_HDRS = \
+	$(LIBDIR)/ltkcpp.h		\
+	$(LIBDIR)/ltkcpp_base.h		\
+	$(LIBDIR)/ltkcpp_connection.h	\
+	$(LIBDIR)/ltkcpp_frame.h	\
+	$(LIBDIR)/ltkcpp_platform.h	\
+	$(LIBDIR)/ltkcpp_xmltext.h	\
+	$(LIBDIR)/out_ltkcpp.h
 
 all: example1
 
 everything:
 	make all
 
-example1 : example1.o $(LTKC_LIB)
-	$(CC) $(CFLAGS) -o example1 example1.o $(LTKC_LIB)
+example1 : example1.o $(LTKCPP_LIB)
+	$(CXX) $(CPPFLAGS) -o example1 example1.o $(LTKCPP_LIB)
 
-example1.o : example1.c $(LTKC_HDRS)
-	$(CC) -c $(CFLAGS) example1.c -o example1.o
+example1.o : example1.cpp $(LTKCPP_HDRS)
+	$(CXX) -c $(CPPFLAGS) example1.cpp -o example1.o
 
 clean:
 	rm -f *.o *.core core.[0-9]*

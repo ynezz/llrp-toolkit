@@ -15,117 +15,115 @@
 #
 ############################################################################
 
-#CFLAGS = -O -Wall
+#CPPFLAGS = -O -Wall
 AR              = ar
-CC              = gcc
-CFLAGS          = -g -Wall
-CINCLUDES	= -I ../../opensource/include/libxml2
+CXX             = g++
+CPPFLAGS        = -g -Wall -I../../opensource/include/libxml2
 
 LLRPDEF         = ../../Definitions/Core/llrp-1x0-def.xml
 
-CODE_GEN_H_XSLT = ltkc_gen_h.xslt
-CODE_GEN_C_XSLT = ltkc_gen_c.xslt
+CODE_GEN_H_XSLT = ltkcpp_gen_h.xslt
+CODE_GEN_CPP_XSLT = ltkcpp_gen_cpp.xslt
 
-LTKC_HDRS = \
-	ltkc.h			\
-	ltkc_base.h		\
-	ltkc_connection.h	\
-	ltkc_frame.h		\
-	ltkc_platform.h		\
-	ltkc_xmltext.h		\
-	out_ltkc.h
+LTKCPP_HDRS = \
+	ltkcpp.h		\
+	ltkcpp_base.h		\
+	ltkcpp_connection.h	\
+	ltkcpp_frame.h		\
+	ltkcpp_platform.h	\
+	ltkcpp_xmltext.h	\
+	out_ltkcpp.h
 
-LTKC_LIB = libltkc.a
-LTKC_OBJS = \
-	ltkc_array.o		\
-	ltkc_connection.o	\
-	ltkc_element.o		\
-	ltkc_encdec.o		\
-	ltkc_error.o		\
-	ltkc_framedecode.o	\
-	ltkc_frameencode.o	\
-	ltkc_frameextract.o	\
-	ltkc_hdrfd.o		\
-	ltkc_xmltextencode.o	\
-	ltkc_xmltextdecode.o	\
-	ltkc_typeregistry.o	\
-	ltkc_genout.o
+LTKCPP_LIB = libltkcpp.a
+LTKCPP_OBJS = \
+	ltkcpp_array.o		\
+	ltkcpp_connection.o	\
+	ltkcpp_element.o	\
+	ltkcpp_encdec.o	\
+	ltkcpp_error.o		\
+	ltkcpp_framedecode.o	\
+	ltkcpp_frameencode.o	\
+	ltkcpp_frameextract.o	\
+	ltkcpp_hdrfd.o		\
+	ltkcpp_xmltextencode.o	\
+	ltkcpp_xmltextdecode.o	\
+	ltkcpp_typeregistry.o	\
+	ltkcpp_genout.o
 
 
-all:    $(LTKC_LIB)
+all:    $(LTKCPP_LIB)
 	cd LLRP.org; make all
 
 everything:
 	make all
 
-$(LTKC_LIB) : $(LTKC_OBJS)
-	$(AR) crv $(LTKC_LIB) $(LTKC_OBJS)
+$(LTKCPP_LIB) : $(LTKCPP_OBJS)
+	$(AR) crv $(LTKCPP_LIB) $(LTKCPP_OBJS)
 
-$(LTKC_OBJS) : $(LTKC_HDRS)
+$(LTKCPP_OBJS) :  $(LTKCPP_HDRS)
 
-ltkc_array.o       : ltkc_array.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_array.c \
-		-o ltkc_array.o
+ltkcpp_array.o         : ltkcpp_array.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_array.cpp \
+		-o ltkcpp_array.o
 
-ltkc_connection.o  : ltkc_connection.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_connection.c \
-		-o ltkc_connection.o
+ltkcpp_connection.o    : ltkcpp_connection.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_connection.cpp \
+		-o ltkcpp_connection.o
 
-ltkc_element.o     : ltkc_element.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_element.c \
-		-o ltkc_element.o
+ltkcpp_element.o       : ltkcpp_element.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_element.cpp \
+		-o ltkcpp_element.o
 
-ltkc_encdec.o      : ltkc_encdec.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_encdec.c \
-		-o ltkc_encdec.o
+ltkcpp_encdec.o        : ltkcpp_encdec.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_encdec.cpp \
+		-o ltkcpp_encdec.o
 
-ltkc_error.o       : ltkc_error.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_error.c \
-		-o ltkc_error.o
+ltkcpp_error.o         : ltkcpp_error.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_error.cpp \
+		-o ltkcpp_error.o
 
-ltkc_framedecode.o : ltkc_framedecode.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_framedecode.c \
-		-o ltkc_framedecode.o
+ltkcpp_framedecode.o   : ltkcpp_framedecode.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_framedecode.cpp \
+		-o ltkcpp_framedecode.o
 
-ltkc_frameencode.o : ltkc_frameencode.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_frameencode.c \
-		-o ltkc_frameencode.o
+ltkcpp_frameencode.o   : ltkcpp_frameencode.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_frameencode.cpp \
+		-o ltkcpp_frameencode.o
 
-ltkc_frameextract.o : ltkc_frameextract.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_frameextract.c \
-		-o ltkc_frameextract.o
+ltkcpp_frameextract.o  : ltkcpp_frameextract.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_frameextract.cpp \
+		-o ltkcpp_frameextract.o
 
-ltkc_hdrfd.o       : ltkc_hdrfd.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_hdrfd.c \
-		-o ltkc_hdrfd.o
+ltkcpp_hdrfd.o         : ltkcpp_hdrfd.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_hdrfd.cpp \
+		-o ltkcpp_hdrfd.o
 
-ltkc_xmltextdecode.o : ltkc_xmltextdecode.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_xmltextdecode.c \
-		-o ltkc_xmltextdecode.o
+ltkcpp_xmltextencode.o : ltkcpp_xmltextencode.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_xmltextencode.cpp \
+		-o ltkcpp_xmltextencode.o
 
-ltkc_xmltextencode.o : ltkc_xmltextencode.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_xmltextencode.c \
-		-o ltkc_xmltextencode.o
+ltkcpp_typeregistry.o  : ltkcpp_typeregistry.cpp
+	$(CXX) -c $(CPPFLAGS) ltkcpp_typeregistry.cpp \
+		-o ltkcpp_typeregistry.o
 
-ltkc_typeregistry.o : ltkc_typeregistry.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) ltkc_typeregistry.c \
-		-o ltkc_typeregistry.o
+ltkcpp_genout.o        : out_ltkcpp.inc out_ltkcpp.h
+ltkcpp_genout.o        : ltkcpp_genout.cpp
+	$(CXX) -c $(CPPFLAGS) -Wno-unused ltkcpp_genout.cpp \
+		-o ltkcpp_genout.o
 
-ltkc_genout.o      : out_ltkc.inc out_ltkc.h
-ltkc_genout.o      : ltkc_genout.c
-	$(CC) -c $(CFLAGS) $(CINCLUDES) -Wno-unused ltkc_genout.c \
-		-o ltkc_genout.o
-
-out_ltkc.h: ltkc_gen_h.xslt $(LLRPDEF)
+out_ltkcpp.h:  ltkcpp_gen_h.xslt     $(LLRPDEF)
 	xsltproc --stringparam RegistryName Core \
-		-o out_ltkc.h ltkc_gen_h.xslt $(LLRPDEF)
+		-o out_ltkcpp.h   $(CODE_GEN_H_XSLT)   $(LLRPDEF)
 
-out_ltkc.inc: ltkc_gen_c.xslt $(LLRPDEF)
+out_ltkcpp.inc:  ltkcpp_gen_cpp.xslt $(LLRPDEF)
 	xsltproc --stringparam RegistryName Core \
-		-o out_ltkc.inc ltkc_gen_c.xslt $(LLRPDEF)
+		-o out_ltkcpp.inc $(CODE_GEN_CPP_XSLT) $(LLRPDEF)
 
 clean:
 	rm -f *.o *.core core.[0-9]*
 	rm -f out_*.inc out_*.h
 	rm -f *.a
 	cd LLRP.org; make clean
+
+# Handy target to generate code when building with Visual Studio
+outs: out_ltkcpp.h out_ltkcpp.inc

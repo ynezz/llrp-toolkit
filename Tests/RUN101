@@ -1,6 +1,6 @@
 #!/bin/sh
 ############################################################################
-#   Copyright 2007,2008 Impinj, Inc.
+#   Copyright 2007,2010 Impinj, Inc.
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -18,7 +18,8 @@
 
 
 STD_TESTS_DX101=../../Tests/dx101
-VERSION=`cat ../Library/ltkc_base.h | grep '^#define LTKC_VERSION_STR' | cut -d\" -f2 | sed -e s/\\\./\_/g`
+
+VERSION=`cat ../Library/ltkcpp_base.h | grep '^#define LTKCPP_VERSION_STR' | cut -d\" -f2 | sed -e s/\\\./\_/g`
 URL="file://`hostname`/`pwd`/$0"
 
 VALGRIND=/opt/ltk/bin/valgrind
@@ -38,12 +39,13 @@ testVectors=(
 	      "$STD_TESTS_DX101/dx101_d" \
 	      "$STD_TESTS_DX101/dx101_e" \
 	      "$STD_TESTS_DX101/dx101_f" \
+
 	      )
 
 testVectorDesc=(      
                   "Set of standard LLRP message" \
-		  "Includes tests with different EPC sizes in reports" \
                   "Includes tag report variations including a very large report" \
+                  "Tests of EPCs of various sizes" \
                   "Includes AccessSpecs of varying shapes and sizes." \
                   "Includes Custom parameters at each extension point." \
                   "Same as dx101_a with XML whitespace variations" \
@@ -60,24 +62,24 @@ runDx101Standard ()
     echo "==      $testDesc"
     echo "================================================================"
     # convert the reference binary to XML
-    ./llrp2xml $testPath.bin > ${testName}_ltkc_refbin.xml
+    ./llrp2xml $testPath.bin > ${testName}_ltkcpp_refbin.xml
     # convert the reference XML to binary
-    ./xml2llrp $testPath.xml > ${testName}_ltkc_refxml.bin
+    ./xml2llrp $testPath.xml > ${testName}_ltkcpp_refxml.bin
     # convert the binary from the reference XML back to binary
-    ./xml2llrp ${testName}_ltkc_refbin.xml > ${testName}_ltkc_refbin.bin
+    ./xml2llrp ${testName}_ltkcpp_refbin.xml > ${testName}_ltkcpp_refbin.bin
 
-    if  ! cmp -s ${testName}_ltkc_refxml.bin $testPath.bin 
+    if  ! cmp -s ${testName}_ltkcpp_refxml.bin $testPath.bin 
     then
         echo "$testName -- FAILED -- XML -> LLRP conversion"
-    elif ! cmp -s ${testName}_ltkc_refbin.bin $testPath.bin 
+    elif ! cmp -s ${testName}_ltkcpp_refbin.bin $testPath.bin 
     then
         echo "$testName -- FAILED -- LLRP -> XML conversion"
     else
         echo $testName -- PASSED
 	# delete the files if things worked 
-	rm -f ${testName}_ltkc_refbin.bin
-	rm -f ${testName}_ltkc_refxml.bin
-	rm -f ${testName}_ltkc_refbin.xml
+	rm -f ${testName}_ltkcpp_refbin.bin
+	rm -f ${testName}_ltkcpp_refxml.bin
+	rm -f ${testName}_ltkcpp_refbin.xml
     fi
     echo ""
     echo ""
@@ -95,20 +97,20 @@ runDx101Valgrind ()
     echo "==      $testDesc"
     echo "================================================================"
 
-    $VALGRIND --max-stackframe=4194376 ./llrp2xml $testPath.bin > /dev/null 2>${testName}_ltkc_llrp2xml.val
-    if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkc_llrp2xml.val    
+    $VALGRIND --max-stackframe=4194376 ./llrp2xml $testPath.bin > /dev/null 2>${testName}_ltkcpp_llrp2xml.val
+    if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkcpp_llrp2xml.val    
     then
         echo "$testName -- FAILED -- LLRP -> XML conversion"
     else
-        $VALGRIND --max-stackframe=4194376 ./xml2llrp $testPath.xml > /dev/null 2>${testName}_ltkc_xml2llrp.val
-        if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkc_xml2llrp.val 
+        $VALGRIND --max-stackframe=4194376 ./xml2llrp $testPath.xml > /dev/null 2>${testName}_ltkcpp_xml2llrp.val
+        if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkcpp_xml2llrp.val 
 	then
             echo "$testName -- FAILED -- XML -> LLRP conversion"
 	else
             echo $testName -- PASSED
 	    # delete the files if things worked 
-	    rm -f ${testName}_ltkc_llrp2xml.val
-	    rm -f ${testName}_ltkc_xml2llrp.val 
+	    rm -f ${testName}_ltkcpp_llrp2xml.val
+	    rm -f ${testName}_ltkcpp_xml2llrp.val 
 	fi
     fi
    
@@ -120,10 +122,12 @@ runDx101Valgrind ()
 # run the actual tests 
 testCnt=${#testVectors[@]}
 
+
 for ((a=0; a < $testCnt ; a++))
 do
     runDx101Standard "${testVectors[$a]}" "${testVectorDesc[$a]}"  
     runDx101Valgrind "${testVectors[$a]}" "${testVectorDesc[$a]}"  
 done
+
 
 

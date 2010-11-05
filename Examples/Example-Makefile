@@ -15,11 +15,11 @@
 #
 ############################################################################
 
-LTKC_DIR = ..
-LTKC_LIBS = $(LTKC_DIR)/libltkc.a
-LTKC_INCL = -I$(LTKC_DIR)
-CFLAGS = -g $(LTKC_INCL)
+LTKCPP_DIR = ..
+LTKCPP_LIBS = $(LTKCPP_DIR)/libltkcpp.a
+LTKCPP_INCL = -I$(LTKCPP_DIR)
+CPPFLAGS = -g $(LTKCPP_INCL)
 
 
-example1 : example1.c
-	$(CC) $(CFLAGS) -o example1 example1.c $(LTKC_LIBS)
+example1 : example1.cpp
+	$(CXX) $(CPPFLAGS) -o example1 example1.cpp $(LTKCPP_LIBS)

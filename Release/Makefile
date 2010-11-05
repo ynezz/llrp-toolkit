@@ -16,46 +16,54 @@
 ############################################################################
 
 LIBDIR=../Library
+MSVSDIR=../VS_LTKCPP
 OPENSOURCEDIR    = ../../opensource/lib
 
-LTKC_HDRS = \
-	$(LIBDIR)/ltkc.h		\
-	$(LIBDIR)/ltkc_base.h		\
-	$(LIBDIR)/ltkc_connection.h	\
-	$(LIBDIR)/ltkc_frame.h		\
-	$(LIBDIR)/ltkc_platform.h	\
-	$(LIBDIR)/ltkc_xmltext.h	\
-	$(LIBDIR)/out_ltkc.h
+LTKCPP_HDRS = \
+	$(LIBDIR)/ltkcpp.h		\
+	$(LIBDIR)/ltkcpp_base.h		\
+	$(LIBDIR)/ltkcpp_connection.h	\
+	$(LIBDIR)/ltkcpp_frame.h	\
+	$(LIBDIR)/ltkcpp_platform.h	\
+	$(LIBDIR)/ltkcpp_xmltext.h	\
+	$(LIBDIR)/out_ltkcpp.h
 
-LTKC_LIB_A          = $(LIBDIR)/libltkc.a
-LIBXML2_A           = $(OPENSOURCEDIR)/libxml2.a
-LTKC_LIBS           = $(LTKC_LIB_A)
-LTKC_FILES          = $(LTKC_HDRS) $(LTKC_LIBS)
-LIBXML2_LIBS     = $(LIBXML2_A)
+LTKCPP_LIB_A        = $(LIBDIR)/libltkcpp.a
+LIBXML2_LIB_A      = $(OPENSOURCEDIR)/libxml2.a
+LTKCPP_MSVS_DIR     = $(MSVSDIR)/libltkcpp
+LTKCPP_MSVS_R       = $(LTKCPP_MSVS_DIR)/Release/libltkcpp_r.lib
+LTKCPP_LIBS         = $(LTKCPP_LIB_A) $(LTKCPP_MSVS_R)
+LIBXML2_LIBS        = $(LIBXML2_LIB_A)
+LTKCPP_FILES        = $(LTKCPP_HDRS) $(LTKCPP_LIBS) $(LIBXML2_LIBS)
 
-EXAMPLE_FILES       = ../Examples/example1.c ../Examples/Example-Makefile
+
+EXAMPLE_FILES       = ../Examples/example1.cpp ../Examples/Example-Makefile
 
 all: std
 
-std: $(LTKC_FILES) $(EXAMPLE_FILES)
-	rm -rf std
+std: $(LTKCPP_FILES) $(EXAMPLE_FILES)
+	-rm -rf std
+	-rm -rf ltkcpp_dox.log
 	mkdir std
 	chmod 777 std
-	mkdir std/libltkc
-	chmod 777 std/libltkc
-	cp $(LTKC_FILES) std/libltkc/.
-	cp -p $(LIBXML2_LIBS) std/libltkc/
-	chmod 444 std/libltkc/*
-	mkdir std/libltkc/example
-	cp ../Examples/example1.c std/libltkc/example/example1.c
-	cp ../Examples/Example-Makefile std/libltkc/example/Makefile
-	chmod 644 std/libltkc/example/*
-	chmod 755 std/libltkc/example
-	chmod 755 std/libltkc
+	mkdir std/libltkcpp
+	chmod 777 std/libltkcpp
+	cp $(LTKCPP_FILES) std/libltkcpp/.
+	chmod 444 std/libltkcpp/*
+	mkdir std/libltkcpp/example
+	cp ../Examples/example1.cpp std/libltkcpp/example/example1.cpp
+	cp ../Examples/Example-Makefile std/libltkcpp/example/Makefile
+	chmod 644 std/libltkcpp/example/*
+	chmod 755 std/libltkcpp/example
+	mkdir std/Documentation
+	chmod 777 std/Documentation
+	(cat ltkcpp.dox ; echo OUTPUT_DIRECTORY="std/Documentation" ) | doxygen - 
+	chmod 755 std/Documentation
+	chmod 755 std/libltkcpp
 	chmod 755 std
-	cd std; tar czf libltkc_std.tgz libltkc
+	cd std; tar czf libltkcpp_std.tgz libltkcpp Documentation
+	cd std; zip -rq libltkcpp_std     libltkcpp Documentation
 
 clean:
-	rm -rf *.tgz
+	rm -rf *.tgz *.zip
 	rm -rf std
-

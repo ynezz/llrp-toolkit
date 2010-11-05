@@ -1,4 +1,5 @@
 #!/bin/sh
+
 ############################################################################
 #   Copyright 2007,2010 Impinj, Inc.
 #
@@ -17,8 +18,9 @@
 ############################################################################
 
 
+
 STD_TESTS_DX301=../../Tests/dx301
-VERSION=`cat ../Library/ltkc_base.h | grep '^#define LTKC_VERSION_STR' | cut -d\" -f2 | sed -e s/\\\./\_/g`
+VERSION=`cat ../Library/ltkcpp_base.h | grep '^#define LTKCPP_VERSION_STR' | cut -d\" -f2 | sed -e s/\\\./\_/g`
 URL="file://`hostname`/`pwd`/$0"
 
 VALGRIND=/opt/ltk/bin/valgrind
@@ -50,15 +52,15 @@ runDx301Standard ()
     echo "==      $testDesc"
     echo "================================================================"
     # convert the reference XML to binary
-    ./xml2llrp $testPath.xml > ${testName}_ltkc_refxml.bin
+    ./xml2llrp $testPath.xml > ${testName}_ltkcpp_refxml.bin
 
-    if  ! cmp -s ${testName}_ltkc_refxml.bin $testPath.bin 
+    if  ! cmp -s ${testName}_ltkcpp_refxml.bin $testPath.bin 
     then
         echo "$testName -- FAILED -- XML -> LLRP conversion"
     else
         echo $testName -- PASSED
 	# delete the files if things worked 
-	rm -f ${testName}_ltkc_refxml.bin
+	rm -f ${testName}_ltkcpp_refxml.bin
     fi
     echo ""
     echo ""
@@ -76,14 +78,14 @@ runDx301Valgrind ()
     echo "==      $testDesc"
     echo "================================================================"
 
-    $VALGRIND ./xml2llrp $testPath.xml > /dev/null 2>${testName}_ltkc_xml2llrp.val
-    if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkc_xml2llrp.val 
+    $VALGRIND ./xml2llrp $testPath.xml > /dev/null 2>${testName}_ltkcpp_xml2llrp.val
+    if ! grep -q 'All heap blocks were freed -- no leaks are possible' ${testName}_ltkcpp_xml2llrp.val 
     then
        echo "$testName -- FAILED -- XML -> LLRP conversion"
     else
         echo $testName -- PASSED
         # delete the files if things worked 
-	rm -f ${testName}_ltkc_xml2llrp.val 
+	rm -f ${testName}_ltkcpp_xml2llrp.val 
     fi
    
     echo ""
