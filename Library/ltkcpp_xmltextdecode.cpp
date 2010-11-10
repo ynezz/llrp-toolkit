@@ -34,6 +34,7 @@
 #include <string.h>
 #include <time.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "ltkcpp_platform.h"
 #include "ltkcpp_base.h"

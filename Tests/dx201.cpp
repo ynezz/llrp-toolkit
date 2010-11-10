@@ -52,7 +52,7 @@
  **
  *****************************************************************************/
 
-
+#include <stdlib.h>
 #include <stdio.h>
 #ifdef linux
 #include <unistd.h>

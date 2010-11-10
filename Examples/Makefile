@@ -21,7 +21,7 @@ INCL = -I$(LIBDIR)
 #CPPFLAGS = -O -Wall $(INCL)
 AR              = ar
 CXX             = g++
-CPPFLAGS        = -g -Wall $(INCL)
+CPPFLAGS        = -g -Wall $(INCL) `pkg-config libxml-2.0 --cflags`
 
 LTKCPP_LIB = $(LIBDIR)/libltkcpp.a
 LTKCPP_HDRS = \
@@ -30,8 +30,7 @@ LTKCPP_HDRS = \
 	$(LIBDIR)/ltkcpp_connection.h	\
 	$(LIBDIR)/ltkcpp_frame.h	\
 	$(LIBDIR)/ltkcpp_platform.h	\
-	$(LIBDIR)/ltkcpp_xmltext.h	\
-	$(LIBDIR)/out_ltkcpp.h
+	$(LIBDIR)/ltkcpp_xmltext.h	
 
 all: example1
 

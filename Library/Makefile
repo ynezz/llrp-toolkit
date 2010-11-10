@@ -18,12 +18,7 @@
 #CPPFLAGS = -O -Wall
 AR              = ar
 CXX             = g++
-CPPFLAGS        = -g -Wall -I../../opensource/include/libxml2
-
-LLRPDEF         = ../../Definitions/Core/llrp-1x0-def.xml
-
-CODE_GEN_H_XSLT = ltkcpp_gen_h.xslt
-CODE_GEN_CPP_XSLT = ltkcpp_gen_cpp.xslt
+CPPFLAGS        = -g -Wall `pkg-config libxml-2.0 --cflags`
 
 LTKCPP_HDRS = \
 	ltkcpp.h		\
@@ -31,8 +26,7 @@ LTKCPP_HDRS = \
 	ltkcpp_connection.h	\
 	ltkcpp_frame.h		\
 	ltkcpp_platform.h	\
-	ltkcpp_xmltext.h	\
-	out_ltkcpp.h
+	ltkcpp_xmltext.h	
 
 LTKCPP_LIB = libltkcpp.a
 LTKCPP_OBJS = \
@@ -52,7 +46,6 @@ LTKCPP_OBJS = \
 
 
 all:    $(LTKCPP_LIB)
-	cd LLRP.org; make all
 
 everything:
 	make all
@@ -106,24 +99,13 @@ ltkcpp_typeregistry.o  : ltkcpp_typeregistry.cpp
 	$(CXX) -c $(CPPFLAGS) ltkcpp_typeregistry.cpp \
 		-o ltkcpp_typeregistry.o
 
-ltkcpp_genout.o        : out_ltkcpp.inc out_ltkcpp.h
 ltkcpp_genout.o        : ltkcpp_genout.cpp
 	$(CXX) -c $(CPPFLAGS) -Wno-unused ltkcpp_genout.cpp \
 		-o ltkcpp_genout.o
 
-out_ltkcpp.h:  ltkcpp_gen_h.xslt     $(LLRPDEF)
-	xsltproc --stringparam RegistryName Core \
-		-o out_ltkcpp.h   $(CODE_GEN_H_XSLT)   $(LLRPDEF)
-
-out_ltkcpp.inc:  ltkcpp_gen_cpp.xslt $(LLRPDEF)
-	xsltproc --stringparam RegistryName Core \
-		-o out_ltkcpp.inc $(CODE_GEN_CPP_XSLT) $(LLRPDEF)
-
 clean:
 	rm -f *.o *.core core.[0-9]*
-	rm -f out_*.inc out_*.h
 	rm -f *.a
-	cd LLRP.org; make clean
 
 # Handy target to generate code when building with Visual Studio
 outs: out_ltkcpp.h out_ltkcpp.inc
