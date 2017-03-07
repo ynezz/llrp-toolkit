@@ -1607,7 +1607,7 @@ CXMLTextDecoderStream::getSingleU1(
     }
     else if ((len >= 1) && (*pbuf == '1'))
     {
-        *pValue = 0;
+        *pValue = 1;
         endPtr = pbuf + 1;
     }
     return endPtr; 	
